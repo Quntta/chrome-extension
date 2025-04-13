@@ -1,0 +1,28 @@
+{
+  "background.enabled": true,
+  "background.useDefault": false,
+  "background.customImages": ["file:///Users/quntta/Documents/desktopWallpaper/36.jpeg"],
+  "background.style": {
+    "content": "''",
+    "pointer-events": "none",
+    "position": "absolute",
+    "z-index": "99999",
+    "width": "100%",
+    "height": "100%",
+    "background-size": "cover",
+    "background-repeat": "no-repeat",
+    "opacity": 0.2
+  },
+  "editor.formatOnSave": true, // 保存时自动格式化
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // 使用 Prettier 格式化 JavaScript
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // 使用 Prettier 格式化 HTML
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode" // 使用 Prettier 格式化 CSS
+  },
+  "prettier.singleQuote": true, // 使用单引号
+  "prettier.semi": false // 禁用分号
+}
