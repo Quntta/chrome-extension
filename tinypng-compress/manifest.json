@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Tinypng-compress",
+  "version": "1.0",
+  "permissions": ["clipboardRead", "clipboardWrite", "contextMenus"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  }
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>img-download</title>
+  <style>
+    body {
+      width: 300px;
+      height: 200px;
+      padding: 10px;
+    }
+    button {
+      margin: 10px;
+    }
+  </style>
+  <script src="popup.js" defer></script>
+</head>
+<body>
+  <h1>Fetch URL</h1>
+  <form id="urlForm">
+    <input type="text" id="urlInput" placeholder="Enter URL" required />
+    <button type="submit">Fetch</button>
+  </form>
+  <button id="reader">看图</button>
+  <pre id="responseOutput"></pre>
+</body>
+</html>

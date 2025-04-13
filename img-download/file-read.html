@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    #content {
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+      overflow: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .img-preview {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h4>
+      选择文件夹:
+      <input type="file" id="fileInput" webkitdirectory>
+    </h4>
+  </div>
+  <script src="./file-read.js"></script>
+</body>
+</html>
