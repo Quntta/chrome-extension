@@ -1,5 +1,8 @@
 var config = {}
-const FORM_KEY = 'clipboard_form_key'
+var FORM_KEY = 'clipboard_form_key'
+var copyHandler = null
+var pasteHandler = null
+var observer = null
 initConfig()
 function getItem(key) {
   const value = localStorage.getItem(key)
@@ -27,57 +30,61 @@ function canModify() {
 
 function proxyInit() {
   if (canModify()) {
-    console.log('当前域名允许修改复制内容')
     initSystem()
+  } else {
+    // console.log('不在允许的域名内，或者未开启功能', 'copyHandler', copyHandler, 'pasteHandler', pasteHandler)
+    // 确保移除监听器
+    if (copyHandler) {
+      document.removeEventListener('copy', copyHandler, true)
+      copyHandler = null
+    }
+    if (pasteHandler) {
+      document.removeEventListener('paste', pasteHandler, true)
+      pasteHandler = null
+    }
+    if (observer) {
+      observer.disconnect()
+      observer = null
+    }
+    // console.log('copyHandler', copyHandler, 'pasteHandler', pasteHandler)
   }
 }
 
 proxyInit()
 
 function initSystem() {
-  console.log('初始化系统-----------------')
-  // 重写 document.execCommand 方法
-  const originalExecCommand = document.execCommand
-  document.execCommand = function (command, ...args) {
-    if (command === 'copy') {
-      const selection = window.getSelection().toString()
-      const modifiedText = transformText(selection)
-      const clipboardData = event.clipboardData || window.clipboardData
-      clipboardData.setData('text/plain', modifiedText)
-      console.log('复制内容已修改:', modifiedText)
-    }
-    return originalExecCommand.call(this, command, ...args)
+  // 确保移除之前的事件监听器
+  if (copyHandler) {
+    document.removeEventListener('copy', copyHandler, true)
+  }
+  if (pasteHandler) {
+    document.removeEventListener('paste', pasteHandler, true)
+  }
+  if (observer) {
+    observer.disconnect()
   }
 
-  // 监听复制事件，使用捕获阶段
-  document.addEventListener(
-    'copy',
-    (event) => {
-      const selection = window.getSelection().toString()
-      const modifiedText = transformText(selection)
-      event.clipboardData.setData('text/plain', modifiedText)
-      event.preventDefault()
-      console.log('捕获阶段 - 复制内容已修改1:', modifiedText)
-      console.log('window.location.href', getHost(window.location.href))
-    },
-    true // 使用捕获阶段
-  )
+  // 定义事件处理函数（确保引用一致）
+  copyHandler = function (event) {
+    const selection = window.getSelection().toString()
+    const modifiedText = transformText(selection)
+    event.clipboardData.setData('text/plain', modifiedText)
+    event.preventDefault()
+  }
 
-  // 监听粘贴事件，处理 Shadow DOM
-  document.addEventListener(
-    'paste',
-    (event) => {
-      const clipboardData = event.clipboardData.getData('text/plain')
-      const modifiedText = transformText(clipboardData)
-      event.target.value = modifiedText
-      event.preventDefault()
-      console.log('捕获阶段 - 粘贴内容已修改2:', modifiedText)
-    },
-    true // 使用捕获阶段
-  )
+  pasteHandler = function (event) {
+    const clipboardData = event.clipboardData.getData('text/plain')
+    const modifiedText = transformText(clipboardData)
+    event.target.value = modifiedText
+    event.preventDefault()
+  }
+
+  // 添加新的事件监听器
+  document.addEventListener('copy', copyHandler, true)
+  document.addEventListener('paste', pasteHandler, true)
 
   // 使用 MutationObserver 动态监听 DOM 变化
-  const observer = new MutationObserver((mutations) => {
+  observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === Node.ELEMENT_NODE) {
@@ -105,7 +112,6 @@ function initSystem() {
           const modifiedText = transformText(selection)
           event.clipboardData.setData('text/plain', modifiedText)
           event.preventDefault()
-          console.log('Shadow DOM - 复制内容已修改:', modifiedText)
         },
         true
       )
@@ -117,7 +123,6 @@ function initSystem() {
           const modifiedText = transformText(clipboardData)
           event.target.value = modifiedText
           event.preventDefault()
-          console.log('Shadow DOM - 粘贴内容已修改:', modifiedText)
         },
         true
       )
@@ -136,7 +141,6 @@ function initSystem() {
 // 监听来自 popup.js 的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'updateClipboardConfig') {
-    console.log('Received message from popup.js:', message.data)
     config = message.data // 更新配置
     setItem(FORM_KEY, config) // 保存配置到 localStorage
     proxyInit() // 重新初始化系统

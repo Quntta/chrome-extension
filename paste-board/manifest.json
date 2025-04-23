@@ -3,6 +3,11 @@
   "name": "Clipboard Modifier",
   "version": "1.0",
   "permissions": ["clipboardRead", "clipboardWrite", "contextMenus", "activeTab", "scripting", "storage"],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
   "background": {
     "service_worker": "background.js"
   },

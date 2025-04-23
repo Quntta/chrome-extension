@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 })
 document.getElementById('submitBtn').addEventListener('click', async function () {
-  console.log('submitBtn clicked')
   const form = document.getElementById('clipboardConfigForm')
   const formData = new FormData(form)
   const data = {
@@ -59,10 +58,12 @@ document.getElementById('submitBtn').addEventListener('click', async function ()
       data[key] = value // 其他字段保持原样
     }
   })
-
-  console.log('Processed Form Data:', data)
   saveFormData(data)
   sentMessage(data)
+  // 关闭弹出窗口
+  setTimeout(() => {
+    window.close()
+  }, 300)
 })
 
 function sentMessage(data) {
