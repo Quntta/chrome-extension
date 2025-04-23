@@ -1,19 +1,126 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      width: 300px;
+      width: 400px;
       height: 200px;
       padding: 10px;
     }
-    button {
+
+    .text-input {
+      width: 200px;
+      outline: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: 28px;
+      line-height: 28px;
+      box-sizing: border-box;
+      padding: 0 10px;
+    }
+
+    .info {
+      font-size: 12px;
+    }
+
+    .box {
+      display: flex;
+      justify-content: flex-end;
       margin: 10px;
+      padding: 10px;
+
+      button {
+        outline: none;
+        border: none;
+        padding: 5px 10px;
+        background: #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+
+    .input-box {
+      padding: 20px 0;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .input-item {
+      display: flex;
+      align-items: center;
+      height: 28px;
+    }
+
+    .input-label {
+      width: 25%;
+      text-align: right;
+      margin-right: 10px;
     }
   </style>
 </head>
+
 <body>
-  <button id="modifyClipboard">修改剪贴板</button>
-  <script src="popup.js"></script>
+  <h1>剪贴板操作</h1>
+  <form id="clipboardConfigForm">
+    <div class="input-box">
+      <p class="input-item">
+        <span class="input-label">生效url:</span>
+        <input class="text-input" type="text" id="filterHostUrl" name="filterHostUrl" placeholder="请输入需要生效的url" />
+      </p>
+    </div>
+
+    <div class="input-box">
+      <p class="input-item">
+        <span class="input-label">
+          px转px
+        </span>
+        <input type="checkbox" name="isPx2Px" id="isPx2Px" />
+      </p>
+      <p class="input-item">
+        <span class="input-label">
+          px转px的比例:
+        </span>
+        <input class="text-input" type="text" id="px2Px" name="px2Px" placeholder="请输入px转px的比例" />
+      </p>
+      <p class="info">例如：设计稿最大宽375px，开发设置最大宽为750px，则比例是2，反之比例是0.5</p>
+    </div>
+    <div class="input-box">
+      <p class="input-item">
+        <span class="input-label">
+          px转rem
+        </span>
+        <input type="checkbox" name="isPx2Rem" id="isPx2Rem" />
+      </p>
+      <p class="input-item">
+        <span class="input-label">
+          px转rem的比例:
+        </span>
+        <input class="text-input" type="text" id="px2Rem" name="px2Rem" placeholder="请输入px转rem的比例" />
+      </p>
+      <p class="info">例如：开发设置1rem=37.5px，则比例是37.5</p>
+    </div>
+    <div class="input-box">
+      <p class="input-item">
+        <span class="input-label">
+          是否开启该功能:
+        </span>
+        <input type="checkbox" name="isOpen" id="isOpen" checked="false" />
+      </p>
+    </div>
+  </form>
+  <div class="box">
+    <button id="submitBtn">保存设置</button>
+  </div>
+  <script src="popup.js" type="module"></script>
 </body>
+
 </html>

@@ -1,29 +1,74 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Download Images</title>
   <script src="jszip.min.js"></script>
-  <script src="download.js" defer></script>
+  <script src="download.js" defer type="module"></script>
+  <script src="down-rander.js" defer type="module"></script>
   <style>
-    #content {
-      width: 100vw;
-      height: calc(100vh - 100px);
-      overflow: auto;
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #title {
+      height: 30px;
+      display: flex;
+      justify-content: space-between;
       padding: 10px;
     }
+
+    #content {
+      width: 100vw;
+      height: calc(100vh - 50px);
+      overflow: auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
     .chapter-item {
       margin: 10px;
       padding: 10px;
       border: 1px solid #ccc;
+      position: relative;
+      border-radius: 5px;
+      overflow: hidden;
     }
+
+    .item-bg {
+      border-radius: 5px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: -1;
+      background-color: rgba(35, 156, 96, 0.8);
+    }
+
+    /* .chapter-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      background-color: rgba(35, 156, 96, 0.8);
+      transform: scaleX(var(--progress, 0));
+      transform-origin: left;
+      transition: transform 0.1s linear;
+    } */
   </style>
 </head>
+
 <body>
-  <h1>Download Images</h1>
+  <div id="title">
+    <h1>Downloading...</h1>
+    <button id="toread">去看图</button>
+  </div>
   <div id="content"></div>
   <div id="chapterContent"></div>
-  <script>
-  </script>
 </body>
+
 </html>
