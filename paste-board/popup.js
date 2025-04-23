@@ -2,14 +2,18 @@ import { FORM_KEY, getItem, setItem } from './utils.js'
 const defaultForm = {
   isPx2Px: 0,
   isPx2Rem: 0,
+  isPx2Rpx: 0,
   isOpen: 0,
+  px2Px: 1,
+  px2Rem: 16,
+  px2Rpx: 1,
   filterHostUrl: 'mastergo.com' // 默认对mastergo.com生效
 }
-const transKeys = ['isPx2Px', 'isPx2Rem', 'isOpen'] // 需要转换的键
+const transKeys = ['isPx2Px', 'isPx2Rem', 'isPx2Rpx', 'isOpen'] // 需要转换的键
 init()
 function init() {
   const form = document.getElementById('clipboardConfigForm')
-  const formData = getItem(FORM_KEY) || {}
+  const formData = getItem(FORM_KEY) || { ...defaultForm }
   // 填充表单
   for (const key in formData) {
     const input = form.querySelector(`[name="${key}"]`)
@@ -29,16 +33,24 @@ function saveFormData(data) {
 document.addEventListener('DOMContentLoaded', () => {
   const isPx2PxCheckbox = document.getElementById('isPx2Px')
   const isPx2RemCheckbox = document.getElementById('isPx2Rem')
-
+  const isPx2RpxCheckbox = document.getElementById('isPx2Rpx')
   isPx2PxCheckbox.addEventListener('change', () => {
     if (isPx2PxCheckbox.checked) {
       isPx2RemCheckbox.checked = false
+      isPx2RpxCheckbox.checked = false
     }
   })
 
   isPx2RemCheckbox.addEventListener('change', () => {
     if (isPx2RemCheckbox.checked) {
       isPx2PxCheckbox.checked = false
+      isPx2RpxCheckbox.checked = false
+    }
+  })
+  isPx2RpxCheckbox.addEventListener('change', () => {
+    if (isPx2RpxCheckbox.checked) {
+      isPx2PxCheckbox.checked = false
+      isPx2RemCheckbox.checked = false
     }
   })
 })

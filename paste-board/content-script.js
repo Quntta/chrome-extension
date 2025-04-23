@@ -155,8 +155,8 @@ function transformText(text) {
   // width: 580px;
   // height: 940px;
   // opacity: 1;
-  // 根据isPx2Px和isPx2Rem，来决定是否对px进行转换，如何值等于1，则进行转换
-  // 根据px2Px和px2Rem，的比例进行转换
+  // 根据isPx2Px和isPx2Rem isPx2Rpx,来决定是否对px进行转换，如何值等于1，则进行转换
+  // 根据px2Px和px2Rem px2Rpx 的比例进行转换
   try {
     // 1 对属性进行分割，分割成数组，支持 ; 和换行符
     const attrArray = text.split(/;|\n/).filter((attr) => attr.trim() !== '') // 去除空白行
@@ -178,6 +178,10 @@ function transformText(text) {
           // px2rem的转换
           const px2RemValue = (pxValue / config.px2Rem).toFixed(4)
           result.push(`${attrKeyValue[0]}: ${px2RemValue}rem`)
+        } else if (config.isPx2Rpx) {
+          // px2rpx的转换
+          const px2RpxValue = pxValue * config.px2Rpx
+          result.push(`${attrKeyValue[0]}: ${px2RpxValue}rpx`)
         } else {
           // 如果不需要转换，则直接添加
           result.push(attr)
